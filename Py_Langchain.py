@@ -5,11 +5,11 @@ from langchain_ollama import ChatOllama
 from langchain_openai import ChatOpenAI
 from langchain_openai import AzureChatOpenAI
 
+# For loading
 load_dotenv()
 
 if __name__ == "__main__":
     print("Hello LangChain!")
-    print(os.environ['OPENAI_API_KEY'])
 
 
     information = """
@@ -39,7 +39,7 @@ if __name__ == "__main__":
 
     # Use Ollama with local Deepseek model
     llm = ChatOllama(
-        model="deepseek-r1:14b",
+        model="llama3:8b",
         base_url="http://localhost:11434",  # Default Ollama URL
         temperature=0
     )
