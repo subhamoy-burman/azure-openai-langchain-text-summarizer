@@ -1,6 +1,7 @@
 import os
 from dotenv import load_dotenv
 from langchain.prompts.prompt import PromptTemplate
+from langchain_ollama import ChatOllama
 from langchain_openai import ChatOpenAI
 from langchain_openai import AzureChatOpenAI
 
@@ -27,13 +28,20 @@ if __name__ == "__main__":
 
     summary_prompt_template = PromptTemplate(input_variables=["information"], template=summary_template)
 
-    llm = AzureChatOpenAI(
-        temperature=0,
-        openai_api_key=os.environ['OPENAI_API_KEY'],
-        openai_api_version="2024-08-01-preview",  # Specify API version
-        azure_endpoint=os.environ['OPENAI_API_BASE'],
-        azure_deployment="gpt-4o",
-        model="gpt-4o"
+    # llm = AzureChatOpenAI(
+    #     temperature=0,
+    #     openai_api_key=os.environ['OPENAI_API_KEY'],
+    #     openai_api_version="2024-08-01-preview",  # Specify API version
+    #     azure_endpoint=os.environ['OPENAI_API_BASE'],
+    #     azure_deployment="gpt-4o",
+    #     model="gpt-4o"
+    # )
+
+    # Use Ollama with local Deepseek model
+    llm = ChatOllama(
+        model="deepseek-r1:14b",
+        base_url="http://localhost:11434",  # Default Ollama URL
+        temperature=0
     )
 
 
