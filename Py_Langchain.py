@@ -6,12 +6,13 @@ from langchain_openai import ChatOpenAI
 from langchain_openai import AzureChatOpenAI
 from linkedin_scrapper import scrape_linkedin_profile
 from linkedin_lookup_agent import lookup as linkedin_lookup_agent
-from output_parsers import summary_parser
+from output_parsers import summary_parser, Summary
+from typing import Tuple
 # For loading environment variables
 load_dotenv()
 
 
-def ice_break_with_linkedin_profile(name:str) -> str:
+def ice_break_with_linkedin_profile(name:str) -> Tuple[Summary,str]:
     linkedin_profile_url = linkedin_lookup_agent(name)
     linkedin_data = scrape_linkedin_profile(linkedin_profile_url, mock=True)
 
@@ -40,10 +41,10 @@ def ice_break_with_linkedin_profile(name:str) -> str:
 
     #chain = summary_prompt_template | llm
     chain = summary_prompt_template | llm | summary_parser
-    result = chain.invoke(input={"information": linkedin_data})
+    result:Summary = chain.invoke(input={"information": linkedin_data})
 
     print(result)
-    return result
+    return result, linkedin_data.get("profile_pic_url")
 
 if __name__ == "__main__":
     print("Hello LangChain!")
